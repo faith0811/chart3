@@ -1,5 +1,6 @@
 *.pyc
 instance/
+.codeintel
 # OS generated files #
 ######################
 .DS_Store

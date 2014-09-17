@@ -5,7 +5,7 @@ from json import loads, dumps
 chat_cache = []
 # this chat_cache includes all existed chat message.
 
-def init():
+def model_init():
     pass
 
 def add_a_chat_message(message_json):

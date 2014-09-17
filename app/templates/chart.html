@@ -1,0 +1,43 @@
+<html>
+<head>
+  <title>chart3</title>
+  <meta charset="utf-8" />
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+      namespace = '/chat';
+      var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+      socket.on('connect', function() {
+
+      });
+
+      socket.on('chat response', function(msg) {
+        $('#chatplace').append('<br>Received : ' + msg);
+      });
+
+
+      $('form#chatform').submit(function(event) {
+        socket.emit('chat', {data: $('#chatform_data').val()});
+        return false;
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>chart3</h1>
+  <h2>做个demo看看</h2>
+  <div id="chatformdiv">
+    <form id="chatform" method='POST' action='#'>
+      <input type="text" name="chatform_data" id="chatform_data" placeholder="写点什么吧">
+      <input type="text" name="chatform_name" id="chatform_name" placeholder="写下你的名字">
+      <input type="submit" value="Echo"></div>
+    </form>
+  </div>
+  <div id="chatplace">
+    {% for item in message %}
+      {{item}} <br>
+    {%- endfor %}
+  </div>
+</body>
+</html>
