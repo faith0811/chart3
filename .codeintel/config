@@ -1,0 +1,7 @@
+{
+    "Python": {
+        "python": '~/.virtualenvs/chart3/bin/python',
+        "pythonExtraPaths": ['~/.virtualenvs/chart3/lib/python2.7/site-packages',
+        ]
+    },
+}
