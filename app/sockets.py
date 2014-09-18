@@ -6,8 +6,9 @@ from . import socketio
 
 @socketio.on('chat', namespace = '/chat')
 def chat_broadcasting(received_json):
+    print (received_json)
     add_a_chat_message(received_json)
-    emit('chat response', {'data':received_json}, broadcast = true)
+    emit('chat response', {'data':received_json}, broadcast = True)
 
 @socketio.on('connect', namespace = '/chat')
 def connect():

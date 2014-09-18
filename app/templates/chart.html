@@ -13,12 +13,16 @@
       });
 
       socket.on('chat response', function(msg) {
-        $('#chatplace').append('<br>Received : ' + msg);
+        $('#chatplace').append('<br>Received : ' + msg.data);
       });
 
 
       $('form#chatform').submit(function(event) {
-        socket.emit('chat', {data: $('#chatform_data').val()});
+        var chatform_name = $('#chatform_name').val();
+        var chatform_data = $('#chatform_data').val();
+        var chatjson = [chatform_data, chatform_name];
+        alert(chatjson);
+        socket.emit('chat', chatjson);
         return false;
       });
     });
