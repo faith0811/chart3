@@ -12,4 +12,4 @@ def chat_broadcasting(received_json):
 
 @socketio.on('connect', namespace = '/chat')
 def connect():
-    emit('chat response', {'data':'connected.'})
+    emit('chat response', {'data':['welcome to chart3!','system']})

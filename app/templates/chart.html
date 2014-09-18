@@ -13,7 +13,7 @@
       });
 
       socket.on('chat response', function(msg) {
-        $('#chatplace').append('<br>Received : ' + msg.data);
+        $('#chatplace').append('<br>' + msg.data[1] + ': ' + Date() + '<br>' + msg.data[0]);
       });
 
 
@@ -21,8 +21,9 @@
         var chatform_name = $('#chatform_name').val();
         var chatform_data = $('#chatform_data').val();
         var chatjson = [chatform_data, chatform_name];
-        alert(chatjson);
+        //alert(chatjson);
         socket.emit('chat', chatjson);
+        $('#chatform_data').val('');
         return false;
       });
     });
