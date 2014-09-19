@@ -15,7 +15,7 @@ def add_a_chat_message(message):
     #print chat_cache
 
 def get_latest_chat_message():
-    message = chat_cache
+    message = chat_cache[-10:]
     #print message
     return message
 

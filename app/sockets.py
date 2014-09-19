@@ -8,8 +8,10 @@ from . import socketio
 @socketio.on('chat', namespace = '/chat')
 def chat_broadcasting(received_json):
     print (received_json)
-    add_a_chat_message(received_json)
-    emit('chat response', {'data':received_json}, broadcast = True)
+    message = transform_html_keywords(received_json)
+    print (received_json)
+    add_a_chat_message(message)
+    emit('chat response', {'data':message}, broadcast = True)
 
 @socketio.on('connect', namespace = '/chat')
 def connect():
@@ -20,4 +22,15 @@ def show_latest_message():
     message = get_latest_chat_message()
     for item in message:
         emit('chat response', {'data':item})
+
+def transform_html_keywords(message):
+    transformed_message = []
+    for item in message:
+        item = item.replace(u'&', u'&amp;')
+        item = item.replace(u' ', u'&nbsp;')
+        item = item.replace(u'"', u'&quot;')
+        item = item.replace(u'<', u'&lt;')
+        item = item.replace(u'>', u'&gt;')
+        transformed_message.append(item)
+    return transformed_message
 
