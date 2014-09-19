@@ -12,8 +12,7 @@ app.config.from_object('config')
 
 model_init()
 
-import views
-
 socketio = SocketIO(app)
 
 import sockets
+import views

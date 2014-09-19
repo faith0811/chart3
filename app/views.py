@@ -2,7 +2,6 @@
 
 from . import app
 from flask import render_template
-from model import get_latest_chat_message
 
 @app.route('/')
 def index():
@@ -10,8 +9,7 @@ def index():
 
 @app.route('/chart')
 def chart():
-    message = get_latest_chat_message()
-    return render_template("chart.html", message=message)
+    return render_template("chart.html")
 
 @app.route('/about')
 def about():

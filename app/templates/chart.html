@@ -13,7 +13,7 @@
       });
 
       socket.on('chat response', function(msg) {
-        $('#chatplace').append('<br>' + msg.data[1] + ': ' + Date() + '<br>' + msg.data[0]);
+        $('#chatplace').prepend('<br>' + msg.data[1] + ': ' + msg.data[2] + '<br>' + msg.data[0]);
       });
 
 
@@ -40,9 +40,9 @@
     </form>
   </div>
   <div id="chatplace">
-    {% for item in message %}
+    <!--{% for item in message %}
       {{item}} <br>
-    {%- endfor %}
+    {%- endfor %}-->
   </div>
 </body>
 </html>
