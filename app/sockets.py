@@ -13,15 +13,18 @@ def chat_broadcasting(received_json):
     add_a_chat_message(message)
     emit('chat response', {'data':message}, broadcast = True)
 
+
 @socketio.on('connect', namespace = '/chat')
 def connect():
     emit('chat response', {'data':['welcome to chart3!','system', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())]})
-    show_latest_message()
 
-def show_latest_message():
+
+@socketio.on('init', namespace = '/chat')
+def show_latest_message(msg):
     message = get_latest_chat_message()
     for item in message:
         emit('chat response', {'data':item})
+
 
 def transform_html_keywords(message):
     transformed_message = []

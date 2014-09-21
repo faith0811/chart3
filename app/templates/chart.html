@@ -7,9 +7,13 @@
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
       namespace = '/chat';
+      showed_content = 0 ;
       var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
       socket.on('connect', function() {
-
+        if (!showed_content) {
+          socket.emit('init', '');
+        }
+        showed_content = 1 ;
       });
 
       socket.on('chat response', function(msg) {

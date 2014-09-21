@@ -18,5 +18,3 @@ def get_latest_chat_message():
     message = chat_cache[-10:]
     #print message
     return message
-
-
