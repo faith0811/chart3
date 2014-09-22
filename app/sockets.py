@@ -28,12 +28,12 @@ def show_latest_message(msg):
 
 def transform_html_keywords(message):
     transformed_message = []
+    html_keywords = [u'&', u' ', u'"', u'>', u'<']
+    html_keywords_dict = {u'>':u'&gt;', u'<':u'&lt;', u'"':u'&quot;',u' ':u'&nbsp;', u'&':u'&amp;'}
     for item in message:
-        item = item.replace(u'&', u'&amp;')
-        item = item.replace(u' ', u'&nbsp;')
-        item = item.replace(u'"', u'&quot;')
-        item = item.replace(u'<', u'&lt;')
-        item = item.replace(u'>', u'&gt;')
+        for keywords in html_keywords:
+            print keywords
+            item = item.replace(keywords, html_keywords_dict[keywords])
         transformed_message.append(item)
     return transformed_message
 
