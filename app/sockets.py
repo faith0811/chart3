@@ -9,14 +9,15 @@ from . import socketio
 def chat_broadcasting(received_json):
     print (received_json)
     message = transform_html_keywords(received_json)
-    print (received_json)
+    if (len(message)>240):
+        emit('chat response', {'data':['the message is too long, please retype a shorter one.', 'system', get_time()]})
     add_a_chat_message(message)
     emit('chat response', {'data':message}, broadcast = True)
 
 
 @socketio.on('connect', namespace = '/chat')
 def connect():
-    emit('chat response', {'data':['welcome to chart3!','system', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())]})
+    emit('chat response', {'data':['welcome to chart3!','system', get_time()]})
 
 
 @socketio.on('init', namespace = '/chat')
@@ -35,4 +36,8 @@ def transform_html_keywords(message):
             item = item.replace(keywords, html_keywords_dict[keywords])
         transformed_message.append(item)
     return transformed_message
+
+
+def get_time():
+    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 

@@ -11,7 +11,8 @@ class Message(Model):
     __tablename__ = 'messages'
     id = Column('message_id', Integer, primary_key = True)
     message_content = Column(String(240))
-    sender_id = Column(Integer, ForeignKey(users.id))
+    sender_id = Column(Integer, ForeignKey('users.user_id'))
+    time = Column(DateTime)
 
     def __init__(self, message_content, sender_id):
         self.message_content = message_content
@@ -25,9 +26,15 @@ class User(Model):
     __tablename__ = 'users'
     id = Column('user_id', Integer, primary_key = True)
     username = Column(String(50), unique = True)
+    email = Column(String(50), unique = True)
 
-    def __init__(self, username):
+    def __init__(self, username, email):
         self.username = username
+        self.email = email
+
+    @property
+    def user_id():
+        return self.id
 
 
 def add_a_chat_message(message):

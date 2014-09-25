@@ -1,2 +1,6 @@
+import os
+
 DEBUG = True
-SECRET_KEY = 'secret_key'
+SECRET_KEY = os.urandom(24)
+
+del os
