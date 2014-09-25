@@ -2,7 +2,7 @@
 
 import time
 from flask.ext.socketio import emit
-from model import add_a_chat_message, get_latest_chat_message
+from models import add_a_chat_message, get_latest_chat_message
 from . import socketio
 
 @socketio.on('chat', namespace = '/chat')
