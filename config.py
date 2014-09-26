@@ -1,6 +1,4 @@
-import os
+# chart3/config.py
 
 DEBUG = True
-SECRET_KEY = os.urandom(24)
-
-del os
+SECRET_KEY = 'j\x0f\x96t\xff\xab~@x\xec\xa1\xfc\n\x05\x11A\x1f\xd2\xa51\xaaL\xc6\x81'

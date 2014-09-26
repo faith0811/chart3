@@ -1,16 +1,16 @@
 # chart3/app/sockets.py
 
-import time
 from flask.ext.socketio import emit
-from models import add_a_chat_message, get_latest_chat_message
+from models import add_a_chat_message, get_latest_chat_message, get_time
 from . import socketio
 
 @socketio.on('chat', namespace = '/chat')
 def chat_broadcasting(received_json):
     print (received_json)
     message = transform_html_keywords(received_json)
-    if (len(message)>240):
+    if (len(message[0])>240):
         emit('chat response', {'data':['the message is too long, please retype a shorter one.', 'system', get_time()]})
+        return
     add_a_chat_message(message)
     emit('chat response', {'data':message}, broadcast = True)
 
@@ -38,6 +38,4 @@ def transform_html_keywords(message):
     return transformed_message
 
 
-def get_time():
-    time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 

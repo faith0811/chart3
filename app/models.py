@@ -32,14 +32,17 @@ class User(Model):
         self.username = username
         self.email = email
 
+    def __repr__(self):
+        return '<User %r>' % (self.username)
+
     @property
-    def user_id():
+    def user_id(self):
         return self.id
 
 
 def add_a_chat_message(message):
     global chat_cache
-    message.append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+    message.append(get_time())
     chat_cache.append(message)
     #print chat_cache
 
@@ -47,3 +50,6 @@ def get_latest_chat_message():
     message = chat_cache[-10:]
     #print message
     return message
+
+def get_time():
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
