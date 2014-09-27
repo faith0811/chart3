@@ -7,7 +7,7 @@ from peewee import *
 chat_cache = []
 # this chat_cache includes all existed chat message.
 
-db = SqliteDatabase('chart3.db')
+db = SqliteDatabase(app.config['DATABASE_URI'])
 
 class BaseModel(Model):
     class Meta:
