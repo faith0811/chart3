@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>sign in</title>
+</head>
+<body>
+  <h1>Sign In</h1>
+  <form action="" method="post" name="login">
+    {{form.hidden_tag()}}
+    <div class='warning'>
+      {% if email_wrong %}
+        your email address is invaild.
+      {% endif %}
+    </div>
+    <p>
+      Please enter your email:<br>
+      {{form.email(size=80)}}<br>
+    </p>
+    <p>{{form.remember_me}} Remember Me</p>
+    <p><input type="submit" value="Sign In"></p>
+</form>
+</body>
+</html>

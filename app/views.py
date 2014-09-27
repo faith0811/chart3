@@ -2,8 +2,7 @@
 
 from . import app
 from flask import render_template, request, redirect, url_for
-from forms import EmailUsernameForm
-from database import db_session
+from forms import EmailForm
 
 
 @app.route('/')
@@ -26,8 +25,9 @@ def login():
     form = EmailForm()
     if form.validate_on_submit():
         email = form.email.data
-        #Users.query.
-    return render_template('login.html')
+        #should be fulfilled later
+        #here to comfirm the user input
+    return render_template('sign_in.html', email_wrong=False, form=form)
 
 @app.errorhandler(404)
 def page_not_found(error):

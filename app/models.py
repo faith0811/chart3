@@ -1,43 +1,34 @@
 # chart3/app/models.py
 
 import time
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from database import Model
+from . import app
+from peewee import *
 
 chat_cache = []
 # this chat_cache includes all existed chat message.
 
-class Message(Model):
-    __tablename__ = 'messages'
-    id = Column('message_id', Integer, primary_key = True)
-    message_content = Column(String(240))
-    sender_id = Column(Integer, ForeignKey('users.user_id'))
-    time = Column(DateTime)
+db = SqliteDatabase('chart3.db')
 
-    def __init__(self, message_content, sender_id):
-        self.message_content = message_content
-        self.sender_id = sender_id
+class BaseModel(Model):
+    class Meta:
+        database = db
 
-    @property
-    def message_json():
-        return [self.message_content,self.sender_id]
+class User(BaseModel):
+    username = CharField(unique=True)
+    email = CharField(unique=True)
+    join_date = DateTimeField()
 
-class User(Model):
-    __tablename__ = 'users'
-    id = Column('user_id', Integer, primary_key = True)
-    username = Column(String(50), unique = True)
-    email = Column(String(50), unique = True)
+class Message(BaseModel):
+    user = ForeignKeyField(User)
+    content = CharField()
+    send_time = DateTimeField()
 
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
+    class Meta:
+        order_by = ('-send_time',)
 
-    def __repr__(self):
-        return '<User %r>' % (self.username)
-
-    @property
-    def user_id(self):
-        return self.id
+def create_tables():
+    db.connect()
+    db.create_tables([User, Message])
 
 
 def add_a_chat_message(message):

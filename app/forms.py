@@ -1,7 +1,7 @@
 # chart3/app/forms.py
 
 from flask.ext.wtf import Form
-from wtforms.fields import TextField
+from wtforms.fields import TextField, BooleanField
 from wtforms.validators import Required, Email
 
 class EmailUsernameForm(Form):
@@ -11,3 +11,4 @@ class EmailUsernameForm(Form):
 
 class EmailForm(Form):
     email = TextField('Email', validators=[Required(), Email()])
+    remember_me = BooleanField('remember_me', default=True)
