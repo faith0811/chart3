@@ -1,7 +1,7 @@
 # chart3/app/models.py
 
-import time
-from flask import g
+import time, datetime
+from flask import g, session
 from . import app
 from peewee import *
 
@@ -50,10 +50,16 @@ def add_a_chat_message(message):
     chat_cache.append(message)
     #print chat_cache
 
+    user = None
+    if session.get('logged_in'):
+        user = User.get(User.id == session.get('user_id'))
+    msg = Message.create(user=user, content=message[0], send_time=datetime.datetime.now())
+
 def get_latest_chat_message():
     message = chat_cache[-10:]
     #print message
     return message
+
 
 def get_time():
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
