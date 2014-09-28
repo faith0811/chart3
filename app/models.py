@@ -1,6 +1,7 @@
 # chart3/app/models.py
 
 import time
+from flask import g
 from . import app
 from peewee import *
 
@@ -30,6 +31,18 @@ def create_tables():
     db.connect()
     db.create_tables([User, Message])
 
+@app.before_request
+def before_request():
+    #print ('open database active!')
+    g.db = db
+    g.db.connect()
+
+
+@app.after_request
+def after_request(response):
+    #print ('close database active!')
+    g.db.close()
+    return response
 
 def add_a_chat_message(message):
     global chat_cache

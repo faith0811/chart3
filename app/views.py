@@ -1,34 +1,96 @@
 # chart3/app/views.py
 
+import datetime
 from . import app
-from flask import render_template, request, redirect, url_for
-from forms import EmailForm
+from flask import render_template, request, redirect, url_for, session, flash
+from forms import EmailForm, EmailUsernameForm
+from models import User,db
+from functools import wraps
 
+
+def login_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('sign_in'))
+        return f(*args, **kwargs)
+    return inner
+
+def not_login_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if session.get('logged_in'):
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)
+    return inner
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    logged = session.get('logged_in')
+    username = 'guest'
+    if logged:
+        username = session.get('username')
+    return render_template("index.html", logged=logged, username=username, sign_in_url=url_for('sign_in'), sign_out_url=url_for('sign_out'), reg_url=url_for('reg'))
+
 
 @app.route('/chart')
+@login_required
 def chart():
-    user_id = request.cookies.get('user_id')
-    if (user_id == None):
-        return redirect(url_for('login'))
     return render_template("chart.html")
+
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route('/login', methods = ['GET', 'POST'])
-def login():
+
+@app.route('/signin', methods=['GET', 'POST'])
+@not_login_required
+def sign_in():
     form = EmailForm()
     if form.validate_on_submit():
         email = form.email.data
-        #should be fulfilled later
-        #here to comfirm the user input
-    return render_template('sign_in.html', email_wrong=False, form=form)
+        try:
+            user = User.get(email=email)
+        except User.DoesNotExist:
+            flash('either our server has just explode or you just type wrong email.')
+        else:
+            log_user(user)
+            return redirect(url_for('index'))
+    return render_template('sign_in.html', form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+@not_login_required
+def reg():
+    form = EmailUsernameForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        username = form.username.data
+        try:
+            with db.transaction():
+                user = User.create(email=email, username=username, join_date=datetime.datetime.now())
+            log_user(user)
+            return redirect(url_for('index'))
+        except:
+            #flash('oops the username/email has been taken. please retry another one.')
+            print ('failed.')
+    return render_template('register.html', form=form)
+
+@app.route('/signout')
+@login_required
+def sign_out():
+    session.pop('logged_in',None)
+    return redirect(url_for('index'))
 
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
+
+
+def log_user(user):
+    session['logged_in'] = True
+    session['user_id'] = user.id
+    session['username'] = user.username
+    #flash('you have signed in with %s' % (user.name))
+

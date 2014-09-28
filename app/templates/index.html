@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
 </head>
 <body>
-  先不做了下次再搞首页
+  亲爱的{{username}}，你可以{% if logged %}<a href="{{sign_out_url}}">登出</a>{% else %}<a href="{{sign_in_url}}">登录</a>或<a href="{{reg_url}}">注册</a>{% endif %}
+
   <br>
   <a href="/chart" title="chart">chart3</a>
   <br>
