@@ -4,6 +4,7 @@ from flask.ext.socketio import emit
 from models import add_a_chat_message, get_latest_chat_message, get_time
 from . import socketio
 
+
 @socketio.on('chat', namespace = '/chat')
 def chat_broadcasting(received_json):
     print (received_json)

@@ -36,7 +36,7 @@ def index():
 @app.route('/chart')
 @login_required
 def chart():
-    return render_template("chart.html")
+    return render_template("chart.html", username=session.get('username'))
 
 
 @app.route('/about')
