@@ -63,9 +63,13 @@ def add_a_chat_message(message):
 def get_latest_chat_message():
     global chat_cache
     if len(chat_cache) == 0:
+        tmp_cache = []
         #query from database to acheive message
-        for msg in Message.select().order_by(Message.send_time).limit(20):
-            chat_cache.append([msg.content, msg.user.username, msg.send_time.strftime("%Y-%m-%d %H:%M:%S")])
+        for msg in Message.select().order_by(Message.send_time.desc()).limit(20):
+            tmp_cache.append([msg.content, msg.user.username, msg.send_time.strftime("%Y-%m-%d %H:%M:%S")])
+        count = len(tmp_cache)
+        for i in range(count):
+            chat_cache.append(tmp_cache[count-i-1])
     message = chat_cache[-10:]
 
     #print message
