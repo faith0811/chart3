@@ -49,7 +49,12 @@ def add_a_chat_message(message):
     message.append(get_time())
     chat_cache.append(message)
     #print chat_cache
-
+    if len(chat_cache)>=40:
+        #delete some message so that the memory wont explode.
+        print ('message trigger limit msg. clean up!')
+        for i in range(10):
+            chat_cache.pop(0)
+        print('clean up done.. now chat_cache length: ' + str(len(chat_cache)))
     user = None
     if session.get('logged_in'):
         user = User.get(User.id == session.get('user_id'))
@@ -59,9 +64,10 @@ def get_latest_chat_message():
     global chat_cache
     if len(chat_cache) == 0:
         #query from database to acheive message
-        for msg in Message.select().order_by(Message.send_time):
+        for msg in Message.select().order_by(Message.send_time).limit(20):
             chat_cache.append([msg.content, msg.user.username, msg.send_time.strftime("%Y-%m-%d %H:%M:%S")])
     message = chat_cache[-10:]
+
     #print message
     return message
 
