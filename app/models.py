@@ -59,7 +59,7 @@ def get_latest_chat_message():
     global chat_cache
     if len(chat_cache) == 0:
         #query from database to acheive message
-        for msg in Message.select():
+        for msg in Message.select().order_by(Message.send_time):
             chat_cache.append([msg.content, msg.user.username, msg.send_time.strftime("%Y-%m-%d %H:%M:%S")])
     message = chat_cache[-10:]
     #print message
