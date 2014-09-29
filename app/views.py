@@ -53,11 +53,12 @@ def sign_in():
         try:
             user = User.get(email=email)
         except User.DoesNotExist:
-            flash('either our server has just explode or you just type wrong email.')
+            #print ('errorrrrrrr!')
+            return render_template('sign_in.html', form=form, login_error=True, reg_url=url_for('reg'))
         else:
             log_user(user)
             return redirect(url_for('index'))
-    return render_template('sign_in.html', form=form)
+    return render_template('sign_in.html', form=form, login_error=False, reg_url=url_for('reg'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -73,9 +74,9 @@ def reg():
             log_user(user)
             return redirect(url_for('index'))
         except:
-            #flash('oops the username/email has been taken. please retry another one.')
-            print ('failed.')
-    return render_template('register.html', form=form)
+            return render_template('register.html', form=form, existed_error=True)
+            #print ('failed.')
+    return render_template('register.html', form=form, existed_error=False)
 
 @app.route('/signout')
 @login_required
@@ -92,5 +93,4 @@ def log_user(user):
     session['logged_in'] = True
     session['user_id'] = user.id
     session['username'] = user.username
-    #flash('you have signed in with %s' % (user.name))
 

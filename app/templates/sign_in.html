@@ -6,6 +6,11 @@
   <h1>Sign In</h1>
   <form action="" method="post" name="login">
     {{form.hidden_tag()}}
+    {% if login_error %}
+      wrong email address.<br>
+      if you don't have account, please register one.<br>
+      <a href="{{reg_url}}" title="register">register</a>
+    {% endif %}
     <p>
       Please enter your email:<br>
       {{form.email(size=80)}}<br>

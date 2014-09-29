@@ -6,6 +6,12 @@
   <h1>Register</h1>
   <form action="" method="post" name="login">
     {{form.hidden_tag()}}
+    <div class="warning">
+      {% if existed_error %}
+        the email/username you just type is existed.<br>
+        please retry.<br>
+      {% endif %}
+    </div>
     <p>
       Please enter your email:<br>
       {{form.email(size=80)}}<br>
